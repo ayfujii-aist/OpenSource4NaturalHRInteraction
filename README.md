@@ -33,15 +33,12 @@ pip3 install rasa==2.7.1
 ```
 
 4. Install ESPnet
+Please refer to [here](https://espnet.github.io/espnet/installation.html).
+If you need, please add the path as following examples.
+
 ```
-sudo apt-get install cmake sox libsndfile1-dev ffmpeg flac nkf python3-venv
-git clone https://github.com/espnet/espnet
-cd espnet/tools
-./setup_venv.sh $(command -v python3)
-make CPU_ONLY=0
 echo "export PATH=$PATH:$HOME/espnet/tools/venv/bin" >> ~/.bashrc
 ```
-For more information, please refer to [here](https://espnet.github.io/espnet/installation.html).
 
 5. Install ``Python NAOqi SDK``
 * You can download it from [here](https://www.softbankrobotics.com/emea/en/support/nao-6/downloads-softwares/former-versions?os=49&category=39). 
