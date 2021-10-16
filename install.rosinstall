@@ -1,0 +1,34 @@
+- git:
+    local-name: jsk_robot
+    uri: https://github.com/jsk-ros-pkg/jsk_robot.git
+    version: master
+
+- git:
+    local-name: naoqi_dashboard
+    uri: https://github.com/ros-naoqi/naoqi_dashboard.git
+    version: master
+
+- git:
+    local-name: nao_robot
+    uri: https://github.com/ros-naoqi/nao_robot.git
+    version: master
+
+- git:
+    local-name: naoqi_driver
+    uri: https://github.com/ros-naoqi/naoqi_driver.git
+    version: master
+
+- git:
+    local-name: naoqi_bridge
+    uri: https://github.com/ros-naoqi/naoqi_bridge.git
+    version: master
+
+- git:
+    local-name: naoqi_bridge_msgs
+    uri: https://github.com/ros-naoqi/naoqi_bridge_msgs.git
+    version: master
+
+- git:
+    local-name: nao_interaction
+    uri: https://github.com/ros-naoqi/nao_interaction.git
+    version: master

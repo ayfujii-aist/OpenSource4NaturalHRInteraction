@@ -1,0 +1,22 @@
+<launch>
+  <arg name="data_language" default="en-US" />
+  <arg name="train_nlu" default="True" />
+  <arg name="train_story" default="True" />
+
+  <node pkg="rasa_ros"
+        name="rasa_nlu_core"
+        type="rasa_nlu_core.py"
+        output="screen">
+    <rosparam subst_value="true">
+      data_language: $(arg data_language)
+      train_nlu: $(arg train_nlu)
+      train_story: $(arg train_story)
+    </rosparam>
+  </node>
+
+  <node pkg="rasa_ros"
+        name="rasa_action"
+        type="rasa_action.py"
+        output="screen" />
+
+</launch>

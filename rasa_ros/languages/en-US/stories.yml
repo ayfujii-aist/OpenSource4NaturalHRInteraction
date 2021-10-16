@@ -1,0 +1,50 @@
+version: "2.0"
+
+stories:
+- story: accepts suggestion
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: gesture_head_nodding
+  - intent: search_restaurant
+  - action: utter_suggest_cuisine
+  - action: gesture_move_LR
+  - intent: affirm
+  - action: utter_search_restaurants
+  - action: gesture_move_botharm
+
+- story: accepts 3rd suggestion
+  steps:
+  - intent: search_restaurant
+  - action: utter_suggest_cuisine
+  - action: gesture_move_LR
+  - intent: deny
+  - action: utter_suggest_cuisine
+  - action: gesture_move_LR
+  - intent: deny
+  - action: utter_suggest_cuisine
+  - action: gesture_move_LR
+  - intent: affirm
+  - action: utter_search_restaurants
+  - action: gesture_move_botharm
+
+- story: accepts suggestion, indirectly
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: gesture_head_nodding
+  - intent: search_restaurant
+  - action: utter_suggest_cuisine
+  - action: gesture_move_LR
+  - user: "I can always go for sushi"
+  - action: utter_search_restaurants
+  - action: gesture_move_botharm
+
+- story: rejects suggestion, indirectly
+  steps:
+  - intent: search_restaurant
+  - action: utter_suggest_cuisine
+  - action: gesture_move_LR
+  - user: "I had that yesterday"
+  - action: utter_suggest_cuisine
+  - action: gesture_move_botharm

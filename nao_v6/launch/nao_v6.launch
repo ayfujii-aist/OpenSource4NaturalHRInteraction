@@ -1,0 +1,103 @@
+<launch>
+  <env name="PYTHONPATH" value="$(env PYTHONPATH)" />
+
+  <param name="robot/type" value="nao" />
+  <param name="robot/name" command='bash -c "getent hosts $NAO_IP | tr -s \" \" | cut -d\  -f 2 | cut -d. -f 1"' />
+  <arg name="nao_ip" value="$(env NAO_IP)"/>
+  <arg name="nao_port"            default="$(optenv NAO_PORT 9559)" />
+  <arg name="roscore_ip" value="$(env ROS_IP)"/>
+  <arg name="network_interface"   default="wlan0" />
+  <arg name="namespace"           default="nao_robot" />
+  <arg name="boot_config_file_name"   default="../../robot_interaction/nao_v6/cfg/boot_config_naov6.json" />
+
+  <!-- for naoqi_microphone -->
+  <arg name="frequency" default="48000" />
+  <arg name="use_ros_time" default="True" />
+
+
+  <!-- naoqi driver -->
+  <include file="$(find naoqi_driver)/launch/naoqi_driver.launch" ns="$(arg namespace)" >
+    <arg name="nao_ip"            value="$(arg nao_ip)" />
+    <arg name="nao_port"          value="$(arg nao_port)" />
+    <arg name="roscore_ip"        value="$(arg roscore_ip)" />
+    <arg name="network_interface" value="$(arg network_interface)" />
+    <arg name="boot_config_file_name" value="$(arg boot_config_file_name)" />
+  </include>
+
+  <!-- launch pose manager -->
+  <include file="$(find naoqi_pose)/launch/pose_manager.launch" ns="$(arg namespace)/pose">
+    <arg name="nao_ip"            value="$(arg nao_ip)" />
+    <arg name="nao_port"          value="$(arg nao_port)" />
+  </include>
+
+  <!-- use sensors -->
+  <node pkg="nao_v6"
+       type="naoqi_touch_sensors.py"
+       name="naoqi_touch_sensors"
+       required="true"
+       args="--pip=$(arg nao_ip) --pport=$(arg nao_port)"/>
+
+   <!-- naoqi_microphone (audio_raw) -->
+   <node pkg="nao_v6" type="naoqi_microphone_raw.py" name="naoqi_microphone" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen">
+    <param name="frequency" type="int" value="$(arg frequency)" />
+    <param name="use_ros_time" type="bool" value="$(arg use_ros_time)" />
+    <remap from="/naoqi_microphone/audio_raw" to="/nao_robot/naoqi_driver/audio_raw" />
+    <remap from="/naoqi_microphone/audio" to="/nao_robot/naoqi_driver/audio" />
+   </node>
+
+  <!-- camera -->
+  <node pkg="naoqi_sensors_py" type="camera.py" name="front" ns="nao_robot/naoqi_driver/camera" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen">
+     <param name="calibration_file_top" type="string" value="file://$(find nao_v6)/share/nao6_camera_top_1280x960.yaml"/>
+     <param name="resolution" type="int" value="3" /> <!-- QVGA=1, VGA=2, k4VGA=3, k16VGA=4 -->
+     <param name="color_space" type="int" value="11" /> <!-- 9 = YUV422, 11 = RGB, 13 = BGR -->
+     <param name="frame_rate" type="int" value="15" /> <!-- 15or30(resolution1-3), 15(resolution4) -->
+     <param name="source" type="int" value="0" /> --> <!-- 0 = top, 1 = bottom -->
+     <param name="auto_exposition" type="int" value="1" /> <!-- 0 = off, 1 = auto -->
+     <param name="auto_exposure_algo" type="int" value="0" /> <!-- 0 = average, 1 = weighted, 2 = adaptive hightlights, 3 = adaptive lowlights-->
+     <param name="exposure" type="int" value="128" />
+     <param name="gain" type="int" value="128" />
+     <param name="brightness" type="int" value="128" />
+     <param name="contrast" type="int" value="25" />
+     <param name="saturation" type="int" value="128" />
+     <param name="hue" type="int" value="0" />
+     <param name="sharpness" type="int" value="0" />
+     <param name="auto_white_balance" type="int" value="1" />
+     <param name="white_balance" type="int" value="-50" />
+     <param name="use_ros_time" type="bool" value="$(arg use_ros_time)" />
+  </node>
+
+    <node pkg="naoqi_sensors_py" type="camera.py" name="bottom" ns="nao_robot/naoqi_driver/camera" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen">
+     <param name="calibration_file_bottom" type="string" value="file://$(find nao_v6)/share/nao6_camera_bottom_1280x960.yaml"/>
+     <param name="resolution" type="int" value="3" /> <!-- QVGA=1, VGA=2, k4VGA=3 -->
+     <param name="color_space" type="int" value="11" /> <!-- 9 = YUV422, 11 = RGB, 13 = BGR -->
+     <param name="frame_rate" type="int" value="15" />
+     <param name="source" type="int" value="1" /> --> <!-- 0 = top, 1 = bottom -->
+     <param name="auto_exposition" type="int" value="1" /> <!-- 0 = off, 1 = auto -->
+     <param name="auto_exposure_algo" type="int" value="0" /> <!-- 0 = average, 1 = weighted, 2 = adaptive hightlights, 3 = adaptive lowlights-->
+     <param name="exposure" type="int" value="128" />
+     <param name="gain" type="int" value="128" />
+     <param name="brightness" type="int" value="128" />
+     <param name="contrast" type="int" value="25" />
+     <param name="saturation" type="int" value="128" />
+     <param name="hue" type="int" value="0" />
+     <param name="sharpness" type="int" value="0" />
+     <param name="auto_white_balance" type="int" value="1" />
+     <param name="white_balance" type="int" value="-50" />
+     <param name="use_ros_time" type="bool" value="$(arg use_ros_time)" />
+    </node>
+
+    <node name="image_proc_front"
+          ns="nao_robot/naoqi_driver/camera/front"
+          pkg="image_proc" type="image_proc" output="screen" />
+    <node name="image_proc_bottom"
+          ns="nao_robot/naoqi_driver/camera/bottom"
+          pkg="image_proc" type="image_proc" output="screen" />
+
+    <node pkg="nao_v6"
+          name="subscribe_sensors"
+          type="subscribe_sensors.py"
+          output="screen" />
+
+    <include file="$(find naoqi_dashboard)/launch/naoqi_dashboard.launch"/>
+
+</launch>

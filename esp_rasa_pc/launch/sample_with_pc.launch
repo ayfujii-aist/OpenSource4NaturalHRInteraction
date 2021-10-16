@@ -1,0 +1,77 @@
+<launch>
+  <arg name="n_channel" default="2" />
+  <arg name="depth" default="16" />
+  <arg name="sample_rate" default="48000" />
+  <arg name="device" default="hw:0,0" />
+  <arg name="volume_threshold" default="600" />
+  <arg name="language" default="en-US" />
+
+  <!-- for rasa training -->
+  <arg name="data_language" default="en-US" />
+  <arg name="train_nlu" default="True" />
+  <arg name="train_story" default="True" />
+
+<!-- audio capture from pc microphone -->
+  <node name="audio_capture" pkg="audio_capture" type="audio_capture"
+        respawn="true">
+    <rosparam subst_value="true">
+      format: wave
+      channels: $(arg n_channel)
+      depth: $(arg depth)
+      sample_rate: $(arg sample_rate)
+      device: $(arg device)
+    </rosparam>
+    <param name="device" value="$(arg device)" />
+  </node>
+
+<!-- stock audio data -->
+  <node name="audio_stock_pc"
+        pkg="esp_rasa_pc"
+        type="audio_stock_pc.py"
+        output="screen" >
+    <rosparam subst_value="true">
+      channels: $(arg n_channel)
+      depth: $(arg depth)
+      sample_rate: $(arg sample_rate)
+    </rosparam>
+  </node>
+
+<!-- detect volume increasing -->
+  <node name="audio_detect_pc"
+        pkg="esp_rasa_pc"
+        type="audio_detect_pc.py"
+        output="screen" >
+    <rosparam subst_value="true">
+      volume_threshold: $(arg volume_threshold)
+    </rosparam>
+  </node>
+
+<!-- make wav and send to espnet-->
+  <node name="make_wav4espnet"
+        pkg="esp_rasa_pc"
+        type="make_wav4espnet.py"
+        output="screen" >
+    <rosparam subst_value="true">
+      depth: $(arg depth)
+      sample_rate: $(arg sample_rate)
+      language: $(arg language)
+    </rosparam>
+  </node>
+
+<!-- use rasa -->
+  <include file="$(find rasa_ros)/launch/rasa_full_ros.launch">
+    <arg name="data_language" value="$(arg data_language)" />
+    <arg name="train_nlu" value="$(arg train_nlu)" />
+    <arg name="train_story" value="$(arg train_story)" />
+  </include>
+
+
+  <!-- for speaking -->
+  <include file="$(find sound_play)/soundplay_node.launch" />
+
+  <node name="sound_play_speak"
+        pkg="esp_rasa_pc"
+        type="sound_play_speak.py"
+        output="screen" />
+
+</launch>

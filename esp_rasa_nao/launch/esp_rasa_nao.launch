@@ -1,0 +1,104 @@
+<launch>
+
+  <arg name="nao_ip" value="$(env NAO_IP)"/>
+  <arg name="nao_port"            default="$(optenv NAO_PORT 9559)" />
+
+  <arg name="language" default="en-US" />
+
+  <!-- audio information -->
+  <arg name="n_channel" default="4" />
+  <arg name="depth" default="16" />
+  <arg name="sample_rate" default="48000" />
+  <arg name="volume_threshold" default="0.9" />
+
+  <!-- for rasa training -->
+  <arg name="data_language" default="en-US" />
+  <arg name="train_nlu" default="True" />
+  <arg name="train_story" default="True" />
+
+ <!-- use speak-action  -->
+ <include file="$(find naoqi_apps)/launch/speech.launch" />
+
+  <!-- only publish topic when recognizing -->
+  <!-- change ~/audio_raw to /audio_recognize -->
+  <node pkg="jsk_topic_tools"
+        type="passthrough"
+        name="passthrough_node">
+    <remap from="~input" to="/nao_robot/naoqi_driver/audio_raw" />
+    <remap from="~output" to="audio_recognize" />
+    <rosparam subst_value="true">
+      default_duration: 0
+    </rosparam>
+  </node>
+
+  <!-- publish all0 AudioData -->
+  <node pkg="esp_rasa_nao"
+        name="audiodata_zero_publisher"
+        type="audiodata_zero_publisher.py"
+        output="screen">
+    <rosparam subst_value="true">
+      channels: $(arg n_channel)
+      sample_rate: $(arg sample_rate)
+    </rosparam>
+  </node>
+
+  <!-- publish all0 Audiodata to /audio_recognize when nao speaking -->
+  <node pkg="jsk_topic_tools"
+        type="passthrough"
+        name="passthrough_zero">
+    <remap from="~input" to="audio_zero" />
+    <remap from="~output" to="audio_recognize" />
+    <rosparam subst_value="true">
+      default_duration: 0
+    </rosparam>
+  </node>
+
+  <!-- stock audio data -->
+  <node name="audio_stock"
+        pkg="esp_rasa_nao"
+        type="audio_stock.py"
+        output="screen" >
+    <rosparam subst_value="true">
+      channels: $(arg n_channel)
+      depth: $(arg depth)
+      sample_rate: $(arg sample_rate)
+    </rosparam>
+  </node>
+
+  <!-- make wav from stocked audio data for espnet -->
+  <node name="make_wav4espnet"
+        pkg="esp_rasa_nao"
+        type="make_wav4espnet.py"
+        output="screen" >
+    <rosparam subst_value="true">
+      sample_rate: $(arg sample_rate)
+      language: $(arg language)
+    </rosparam>
+  </node>
+
+  <!-- detecting when robot hear sound -->
+  <node pkg="esp_rasa_nao"
+       type="audio_detect.py"
+       name="audio_detect"
+       required="true"
+       output="screen"
+       args="--pip=$(arg nao_ip) --pport=$(arg nao_port)">
+    <rosparam subst_value="true">
+      volume_threshold: $(arg volume_threshold)
+    </rosparam>
+  </node>
+
+  <!-- use rasa -->
+  <include file="$(find rasa_ros)/launch/rasa_full_ros.launch">
+    <arg name="data_language" value="$(arg data_language)" />
+    <arg name="train_nlu" value="$(arg train_nlu)" />
+    <arg name="train_story" value="$(arg train_story)" />
+  </include>
+
+  <!-- speak intent of RASA -->
+  <node name="nao_speak_rasa"
+        pkg="esp_rasa_nao"
+        type="nao_speak_rasa.py"
+        output="screen" />
+
+</launch>
