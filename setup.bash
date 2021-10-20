@@ -2,7 +2,7 @@
 
 cd .. # catkin_ws
 wstool init src
-wstool merge -t src src/robot_interaction/install.rosinstall
+wstool merge -t src src/OpenSource4NaturalHRInteraction/install.rosinstall
 wstool update -t src
 source /opt/ros/melodic/setup.bash
 rosdep install -y -r --from-paths src --ignore-src
