@@ -33,7 +33,14 @@ pip3 install rasa==2.7.1
 ```
 
 4. Install ESPnet
-Please refer to [here](https://espnet.github.io/espnet/installation.html).
+```
+sudo apt-get install cmake sox libsndfile1-dev ffmpef flac
+pip3 install soundfile==0.10.3.post1
+pip3 install espnet==0.10.1
+pip3 install espnet-model-zoo==0.1.5
+```
+
+For more information, please refer to [here](https://espnet.github.io/espnet/installation.html).
 If you need, please add the path as following examples.
 
 ```
