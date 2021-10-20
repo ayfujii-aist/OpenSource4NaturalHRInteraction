@@ -29,7 +29,10 @@ pip3 install --upgrade pip
 pip3 install testresources==2.0.1
 pip3 install nltk==3.6.2
 pip3 install regex==2020.9.27
+pip3 install rasa-nlu==0.15.1
 pip3 install rasa==2.7.1
+python3 -m spacy download en_core_web_md
+python3 -m spacy link en_core_web_md en
 ```
 
 4. Install ESPnet
@@ -38,14 +41,11 @@ sudo apt-get install cmake sox libsndfile1-dev ffmpef flac
 pip3 install soundfile==0.10.3.post1
 pip3 install espnet==0.10.1
 pip3 install espnet-model-zoo==0.1.5
+pip3 install kenlm==0.0.0
 ```
 
 For more information, please refer to [here](https://espnet.github.io/espnet/installation.html).
-If you need, please add the path as following examples.
 
-```
-echo "export PATH=$PATH:$HOME/espnet/tools/venv/bin" >> ~/.bashrc
-```
 
 5. Install ``Python NAOqi SDK``
 * You can download it from [here](https://www.softbankrobotics.com/emea/en/support/nao-6/downloads-softwares/former-versions?os=49&category=39). 
@@ -89,7 +89,7 @@ roslaunch esp_rasa_nao esp_rasa_nao.launch
 You can also test without Nao.
 In this case, you may need to change the roslaunch parameters.
 ```
-roslaunch esp_rasa_pc esp_rasa_pc.launch
+roslaunch esp_rasa_pc sample_with_pc.launch
 ```
 
 #### Change the roslaunch parameters
