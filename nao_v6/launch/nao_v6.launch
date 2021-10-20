@@ -8,7 +8,7 @@
   <arg name="roscore_ip" value="$(env ROS_IP)"/>
   <arg name="network_interface"   default="wlan0" />
   <arg name="namespace"           default="nao_robot" />
-  <arg name="boot_config_file_name"   default="../../robot_interaction/nao_v6/cfg/boot_config_naov6.json" />
+  <arg name="boot_config_file_name"   default="../../OpenSource4NaturalHRInteraction/nao_v6/cfg/boot_config_naov6.json" />
 
   <!-- for naoqi_microphone -->
   <arg name="frequency" default="48000" />
