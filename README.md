@@ -61,7 +61,7 @@ Follow the below commands.
 source ~/.bashrc
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-【TODO】git clone https://github.com/ayfujii-aist/robot_interaction.git
+git clone -b hri-review https://github.com/ayfujii-aist/OpenSource4NaturalHRInteraction
 bash robot_interaction/setup.bash
 cd .. # catkin_ws
 catkin build
