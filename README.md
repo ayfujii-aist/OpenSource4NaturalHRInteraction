@@ -8,6 +8,7 @@ This repository contains an open source robot interaction architecture to enable
 ## Setup environment
 These programs are run on 
 * Ubuntu 18.04
+* Quadro RTX 5000 Mobile / Max-Q
 * ROS melodic
 * Cuda 10.1
 * CUDNN 7.6.5
