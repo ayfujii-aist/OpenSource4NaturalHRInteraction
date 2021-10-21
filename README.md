@@ -38,7 +38,7 @@ python3 -m spacy link en_core_web_md en
 
 4. Install ESPnet
 ```
-sudo apt-get install cmake sox libsndfile1-dev ffmpef flac
+sudo apt-get install cmake sox libsndfile1-dev ffmpeg flac
 pip3 install soundfile==0.10.3.post1
 pip3 install espnet==0.10.1
 pip3 install espnet-model-zoo==0.1.5
