@@ -29,8 +29,8 @@ pip3 install --upgrade pip
 pip3 install testresources==2.0.1
 pip3 install nltk==3.6.2
 pip3 install regex==2020.9.27
-pip3 install rasa-nlu==0.15.1
 pip3 install rasa==2.7.1
+pip3 install rasa[transformers]==2.7.1
 python3 -m spacy download en_core_web_md
 python3 -m spacy link en_core_web_md en
 ```
