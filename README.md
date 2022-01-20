@@ -3,6 +3,8 @@
 ## About
 Open Source System Integration Towards Natural Interaction with Robots
 
+![Image 1](image/systems.png)
+
 This repository contains an open source robot interaction architecture to enable natural interacton with a reobot agent. The system is built on a ROS platform and it integrates ESPnet speech recognizer (Watanabe et al. 2018 https://arxiv.org/abs/1804.00015), Rasa dialogue model (https://rasa.com/) and Nao Robot (https://www.softbankrobotics.com/emea/en/nao)
 
 ## Setup environment
@@ -108,3 +110,7 @@ roslaunch esp_rasa_pc sample_with_pc.launch
 ````
 roslaunch esp_rasa_nao esp_rasa_nao.launch train_nlu:=false train_story:=false
 ````
+
+
+## Authors
+The work is done by Ayaka Fujii as Research Assistant at AIST AI Research Center, under the supervision of Kristiina Jokinen.
