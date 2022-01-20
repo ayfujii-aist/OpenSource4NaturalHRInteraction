@@ -3,7 +3,7 @@
 ## About
 Open Source System Integration Towards Natural Interaction with Robots
 
-![Image 1](image/systems.png)
+<img src="image/systems.png" width="400">
 
 This repository contains an open source robot interaction architecture to enable natural interacton with a reobot agent. The system is built on a ROS platform and it integrates ESPnet speech recognizer (Watanabe et al. 2018 https://arxiv.org/abs/1804.00015), Rasa dialogue model (https://rasa.com/) and Nao Robot (https://www.softbankrobotics.com/emea/en/nao)
 
