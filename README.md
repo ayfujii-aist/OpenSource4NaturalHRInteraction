@@ -116,7 +116,7 @@ Robot "Great! Here's what I found
 
 * Change "volume_threshold" for volume detection according to your environment.
 
-#### Change the speech contents.
+#### Change the speech contents
 Please change yaml files in ```rasa_ros/languages/en-US```
 
 For more information, please refer to [here](https://rasa.com/docs/rasa/2.x/training-data-format).
@@ -124,10 +124,9 @@ For more information, please refer to [here](https://rasa.com/docs/rasa/2.x/trai
 #### Change the language
 Please change the roslaunch parameters of "language" and "data_language"
 
-Please add your language folder in rasa_ros/languages (like an "en-US") and add your xml files in the language folder.
+Please add your language folder in rasa_ros/languages (like "en-US") and add your xml files in the language folder.
 
-Please add the espnet dataset in your language like [here].(https://github.com/aistairc/OpenSource4NaturalHRInteraction/esp_rasa_nao/scripts/make_wav4espnet.py#L28)
-
+Please add the espnet dataset name in your language like [here].(https://github.com/aistairc/OpenSource4NaturalHRInteraction/esp_rasa_nao/scripts/make_wav4espnet.py#L28)
 
 #### Not training rasa every roslaunch
 * Set "train_nlu" and "train_story" false.
