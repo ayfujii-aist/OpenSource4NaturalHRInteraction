@@ -83,6 +83,7 @@ source ~/.bashrc
 
 If you want to use with Nao v6
 * Check your "network_interface" by ```ifconfig```
+* Start by saying "Hello" (or some simple greeting) to the robot.
 ```
 roscore
 roslaunch nao_v6 nao_v6.launch network_interface:=wlan0
@@ -95,6 +96,17 @@ In this case, you may need to change the roslaunch parameters.
 roslaunch esp_rasa_pc sample_with_pc.launch
 ```
 
+Following is an example of conversation.
+```
+You "Good morning."
+Robot "Hi!"
+You "Please search a restaurant."
+Robot "How about sushi?"
+You "OK"
+Robot "Great! Here's what I found
+```
+* Dialogue example in languages/en-US repository is based on the example provided by Rasa. (https://github.com/RasaHQ/rasa/tree/main/examples/e2ebot)
+
 #### Change the roslaunch parameters
 * Check your pc microphone channels, depth, and sample rate by using ```pactl list short sinks```
   * Please change "n_channel", "depth" and "sample_rate" 
@@ -103,6 +115,19 @@ roslaunch esp_rasa_pc sample_with_pc.launch
   * Please change "device" as "hw:[card number],[device number]"
 
 * Change "volume_threshold" for volume detection according to your environment.
+
+#### Change the speech contents.
+Please change yaml files in ```rasa_ros/languages/en-US```
+
+For more information, please refer to [here](https://rasa.com/docs/rasa/2.x/training-data-format).
+
+#### Change the language
+Please change the roslaunch parameters of "language" and "data_language"
+
+Please add your language folder in rasa_ros/languages (like an "en-US") and add your xml files in the language folder.
+
+Please add the espnet dataset in your language like [here].(https://github.com/aistairc/OpenSource4NaturalHRInteraction/esp_rasa_nao/scripts/make_wav4espnet.py#L28)
+
 
 #### Not training rasa every roslaunch
 * Set "train_nlu" and "train_story" false.

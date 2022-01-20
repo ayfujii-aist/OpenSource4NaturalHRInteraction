@@ -75,6 +75,7 @@ class RasaNLU():
         self.agent = Agent.load(story_directory, interpreter=model_directory, action_endpoint=_endpoints.action)
 
         self.pub = rospy.Publisher("/rasa_ros/nlu_detection", RasaMsg, queue_size=1)
+        self.pub_action = rospy.Publisher("/rasa_ros/agent_action", String, queue_size=1)
         self.pub_agent = rospy.Publisher("/rasa_ros/agent_speech", String, queue_size=1)
         rospy.Subscriber("/speech_content", String, self.topic_cb)
         print("Init all")
@@ -133,6 +134,29 @@ class RasaNLU():
         text=String()
         text.data=cleaned_text
         self.pub_agent.publish(text)
+
+        action_list=[]
+        all_action=[]
+        current_action=[]
+        action_listen_num=0
+        action_name=self.loop.run_until_complete(self.agent.predict_next(sender_id="default"))
+        action_list=action_name["tracker"]["events"]
+        for each_action in action_list:
+            if each_action["event"]=="action":
+                all_action.append(each_action["name"])
+        all_action.reverse()
+        for aa in all_action:
+            if aa=="action_listen":
+                action_listen_num+=1
+            if action_listen_num>=2:
+                break
+            current_action.append(aa)
+        current_action.reverse()
+        for ca in current_action:
+            ca_name=String()
+            ca_name.data=ca
+            print("[agent_action]: " + ca)
+            self.pub_action.publish(ca_name)
 
 if __name__ == "__main__":
     rospy.init_node('rasa_nlu')
