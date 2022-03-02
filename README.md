@@ -34,8 +34,13 @@ pip3 install nltk==3.6.2
 pip3 install regex==2020.9.27
 pip3 install rasa==2.7.1
 pip3 install rasa[transformers]==2.7.1
+pip3 install spacy==2.3.5
 python3 -m spacy download en_core_web_md
 python3 -m spacy link en_core_web_md en
+(For Japanese) pip3 install ginza==4.0.5
+(For Japanese) python3 -m spacy download ja_core_news_sm
+(For Japanese) python3 -m spacy download ja_core_news_md
+(For Japanese) python3 -m spacy download ja_core_news_lg
 ```
 
 4. Install ESPnet
@@ -126,7 +131,9 @@ Please change the roslaunch parameters of "language" and "data_language"
 
 Please add your language folder in rasa_ros/languages (like "en-US") and add your xml files in the language folder.
 
-Please add the espnet dataset name in your language like [here].(https://github.com/aistairc/OpenSource4NaturalHRInteraction/esp_rasa_nao/scripts/make_wav4espnet.py#L28)
+Please add the espnet dataset name in your language like [here](https://github.com/aistairc/OpenSource4NaturalHRInteraction/esp_rasa_nao/scripts/make_wav4espnet.py#L28).
+
+Please download spaCy model and write it in config.yml like ```language: en```.
 
 #### Add robot gestures
 Please write your original gestures in ```rasa_ros/actions/actions.py```.
