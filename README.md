@@ -35,7 +35,10 @@ pip3 install nltk==3.6.2
 pip3 install regex==2020.9.27
 pip3 install rasa==2.7.1
 pip3 install rasa[transformers]==2.7.1
+<<<<<<< ours
 pip3 install rasa_sdk==2.7.0
+=======
+>>>>>>> theirs
 pip3 install spacy==2.3.5
 python3 -m spacy download en_core_web_md
 python3 -m spacy link en_core_web_md en
