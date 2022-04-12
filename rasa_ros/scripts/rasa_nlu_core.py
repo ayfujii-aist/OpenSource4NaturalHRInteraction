@@ -74,9 +74,9 @@ class RasaNLU():
         _endpoints = AvailableEndpoints.read_endpoints(rospack.get_path('rasa_ros') + '/endpoints.yml')
         self.agent = Agent.load(story_directory, interpreter=model_directory, action_endpoint=_endpoints.action)
 
-        self.pub = rospy.Publisher("/rasa_ros/nlu_detection", RasaMsg, queue_size=1)
-        self.pub_action = rospy.Publisher("/rasa_ros/agent_action", String, queue_size=1)
-        self.pub_agent = rospy.Publisher("/rasa_ros/agent_speech", String, queue_size=1)
+        self.pub = rospy.Publisher("/rasa_ros/nlu_detection", RasaMsg, queue_size=10)
+        self.pub_action = rospy.Publisher("/rasa_ros/agent_action", String, queue_size=100)
+        self.pub_agent = rospy.Publisher("/rasa_ros/agent_speech", String, queue_size=10)
         rospy.Subscriber("/speech_content", String, self.topic_cb)
         print("Init all")
 

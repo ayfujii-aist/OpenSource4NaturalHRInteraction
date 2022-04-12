@@ -26,6 +26,7 @@ sudo apt-get upgrade
 sudo apt-get install python-catkin-tools python-gobject python-pip python3-pip ros-melodic-jsk-tools ros-melodic-jsk-common
 pip install --upgrade pip
 pip3 install --upgrade pip
+pip3 install rospkg
 ```
 
 3. Install Rasa
@@ -35,6 +36,7 @@ pip3 install nltk==3.6.2
 pip3 install regex==2020.9.27
 pip3 install rasa==2.7.1
 pip3 install rasa[transformers]==2.7.1
+pip3 install rasa_sdk==2.7.0
 pip3 install spacy==2.3.5
 python3 -m spacy download en_core_web_md
 python3 -m spacy link en_core_web_md en
